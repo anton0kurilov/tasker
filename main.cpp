@@ -17,11 +17,11 @@ int main() {
 		switch (menuMainResult) {
 		// Отображение задач
 		case 1: {
-			if (!Obj.taskOutOnScreen()) {
-				cout << "\n\tВСЕ ЗАДАЧИ УДАЛЕНЫ!" << endl;
+			if (Obj.taskOutOnScreen()) {
+				Obj.taskSave(doc);
 			}
 			else {
-				Obj.taskOutOnScreen();
+				cout << "\n\tВСЕ ЗАДАЧИ УДАЛЕНЫ!" << endl;
 			}
 			break;
 		}
@@ -31,16 +31,16 @@ int main() {
 			int taskDeleteNum;
 			cout << "Введите номер удаляемой задачи: ";
 			cin >> taskDeleteNum;
-			if (!Obj.taskDelete(taskDeleteNum)) {
-				system("cls");
-				cout << "\n\tЗАДАЧА НЕ НАЙДЕНА!" << endl;
-			}
-			else {
-				Obj.taskDelete(taskDeleteNum);
+			if (Obj.taskDelete(taskDeleteNum)) {
 				system("cls");
 				cout << "\n\tЗАДАЧА УДАЛЕНА!" << endl;
+				Obj.taskSave(doc);
 			}
-			Obj.taskSave(doc);
+			else {
+				system("cls");
+				cout << "\n\tЗАДАЧА НЕ НАЙДЕНА!" << endl;
+
+			}
 			break;
 		}
 		// Изменение задачи
@@ -49,14 +49,13 @@ int main() {
 			int taskEditNum;
 			cout << "Введите номер редактируемой задачи: ";
 			cin >> taskEditNum;
-			if (!Obj.taskEdit(taskEditNum)) {
+			if (Obj.taskEdit(taskEditNum)) {
+				Obj.taskSave(doc);
+			}
+			else {
 				system("cls");
 				cout << "\n\tЗАДАЧА НЕ НАЙДЕНА!" << endl;
 			}
-			else {
-				Obj.taskEdit(taskEditNum);
-			}
-			Obj.taskSave(doc);
 			break;
 		}
 		// Добавление задач
@@ -65,8 +64,13 @@ int main() {
 			cout << "Введите количество задач, которые вы хотите добавить: ";
 			int taskAddNum;
 			cin >> taskAddNum;
-			Obj.taskAdd(taskAddNum);
-			Obj.taskSave(doc);
+			if (Obj.taskAdd(taskAddNum)) {
+				Obj.taskSave(doc);
+			}
+			else {
+				system("cls");
+				cout << "\n\tСЛИШКОМ МНОГО ЗАДАЧ!" << endl;
+			}
 			break;
 		}
 		case 5: {
@@ -76,7 +80,7 @@ int main() {
 			categoryMenuResult = categoryMenu();
 			if (categoryMenuResult > 0 && categoryMenuResult < 5) {
 				if (Obj.taskCategoryOut(categoryMenuResult)) {
-					Obj.taskCategoryOut(categoryMenuResult);
+					system("cls");
 				}
 				else {
 					system("cls");
@@ -100,7 +104,6 @@ int main() {
 		default: {
 			Obj.taskSave(doc);
 			system("cls");
-			menuMainResult = 1;
 			cout << "\n\tНЕВЕРНАЯ КОМАНДА!" << endl;
 		}
 		}
