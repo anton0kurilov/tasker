@@ -9,16 +9,16 @@ using namespace std;
 int main() {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	char doc[] = "tasks.txt";
+	char address[] = "tasks.txt";
 	int menuMainResult = 1;
-	Array <Tasker> Obj(doc);
+	Array <Tasker> Obj(address);
 	while (menuMainResult > 0) {
 		menuMainResult = menuMain();
 		switch (menuMainResult) {
 		// Отображение задач
 		case 1: {
 			if (Obj.taskOutOnScreen()) {
-				Obj.taskSave(doc);
+				Obj.taskSave(address);
 			}
 			else {
 				cout << "\n\tВСЕ ЗАДАЧИ УДАЛЕНЫ!" << endl;
@@ -34,7 +34,7 @@ int main() {
 			if (Obj.taskDelete(taskDeleteNum)) {
 				system("cls");
 				cout << "\n\tЗАДАЧА УДАЛЕНА!" << endl;
-				Obj.taskSave(doc);
+				Obj.taskSave(address);
 			}
 			else {
 				system("cls");
@@ -50,7 +50,7 @@ int main() {
 			cout << "Введите номер редактируемой задачи: ";
 			cin >> taskEditNum;
 			if (Obj.taskEdit(taskEditNum)) {
-				Obj.taskSave(doc);
+				Obj.taskSave(address);
 			}
 			else {
 				system("cls");
@@ -65,7 +65,7 @@ int main() {
 			int taskAddNum;
 			cin >> taskAddNum;
 			if (Obj.taskAdd(taskAddNum)) {
-				Obj.taskSave(doc);
+				Obj.taskSave(address);
 			}
 			else {
 				system("cls");
@@ -78,9 +78,9 @@ int main() {
 			int categoryMenuResult;
 			cout << "Выберите категорию, которую нужно показать на экране: " << endl;
 			categoryMenuResult = categoryMenu();
+			system("cls");
 			if (categoryMenuResult > 0 && categoryMenuResult < 5) {
 				if (Obj.taskCategoryOut(categoryMenuResult)) {
-					system("cls");
 				}
 				else {
 					system("cls");
@@ -90,19 +90,19 @@ int main() {
 			else {
 				system("cls");
 				cout << "\n\tКАТЕГОРИЯ НЕ НАЙДЕНА!" << endl;
-			}
+			} 
 			break;
 		}
 		// Выход из программы
 		case 0: {
-			Obj.taskSave(doc);
+			Obj.taskSave(address);
 			system("cls");
 			exit();
 			break;
 		}
 		// Неверная команда
 		default: {
-			Obj.taskSave(doc);
+			Obj.taskSave(address);
 			system("cls");
 			cout << "\n\tНЕВЕРНАЯ КОМАНДА!" << endl;
 		}
