@@ -2,10 +2,9 @@
 #ifndef CLASSTASKER_H
 #define CLASSTASKER_H
 #include "functions.h"
-using namespace std;
 class Tasker {
 public:
-	char * taskCategory = new char[20], taskName[101];
+	char taskCategory[20],  taskName[101];
 	int taskHrs = 24, taskMins = 60;
 
 	Tasker() {}
@@ -13,31 +12,30 @@ public:
 		int categoryMenuResult, timeInResult;
 		cout << "Введите название задачи: ";
 		cin.ignore();
-		cin.getline(taskName, 101);
-
+		cin.getline(taskName, sizeof(taskName));
 		cout << "Выберите категорию задачи: " << endl;
 		categoryMenuResult = categoryMenu();
 		switch (categoryMenuResult) {
 		case 1: {
-			taskCategory = "Личные";
+			strcpy(taskCategory, "Личные");
 			break;
 		}
 		case 2: {
-			taskCategory = "Рабочие";
+			strcpy(taskCategory, "Рабочие");
 			break;
 		}
 		case 3: {
-			taskCategory = "Покупки";
+			strcpy(taskCategory, "Покупки");
 			break;
 		}
 		case 4: {
-			taskCategory = "Другие";
+			strcpy(taskCategory, "Другие");
 			break;
 		}
 		default: {
 			cout << "\n\tНЕВЕРНАЯ КОМАНДА! " <<
 				"Выбрана категория «Другие»\n" << endl;
-			taskCategory = "Другие";
+			strcpy(taskCategory, "Другие");
 		}
 		}
 		cout << "Если хотите задать время выполнения задачи, введите 1: ";
@@ -52,7 +50,7 @@ public:
 				cin >> taskMins;
 				if (taskHrs < 0 || taskHrs > 23 || taskMins < 0 || taskMins > 59) {
 					system("cls");
-					cout << "\n\tНЕВЕРНЫЕ ДАННЫЕ!" << endl;
+					cout << "\n\tНЕВЕРНЫЕ ДАННЫЕ!\n" << endl;
 				}
 			}
 			break;
@@ -74,20 +72,18 @@ public:
 	cout << "=====================================" << endl;
 	}
 	friend istream & operator >> (istream & stream, Tasker & streamObj) {
-		stream >> streamObj.taskCategory >> streamObj.taskName >> streamObj.taskHrs >> streamObj.taskMins;
+		stream >> streamObj.taskCategory;
+		stream.ignore();
+		stream.getline(streamObj.taskName, sizeof(streamObj.taskName));
+		stream.sync();
+		stream >> streamObj.taskHrs >> streamObj.taskMins;
 		return stream; 
 	}
 	friend ostream & operator << (ostream & stream, const Tasker & streamObj) {
-		stream << streamObj.taskCategory << " " << streamObj.taskName << " " << streamObj.taskHrs <<  " " << streamObj.taskMins;
+		stream << streamObj.taskCategory << endl; 
+		stream << streamObj.taskName << endl;
+		stream << streamObj.taskHrs << " " << streamObj.taskMins << "\n";
 		return stream;
 	}
-	/*const Tasker & Tasker::operator = (const Tasker & overlObj) {
-		if (this == & overlObj) return *this;
-		strcpy(taskCategory, overlObj.taskCategory);
-		strcpy(taskName, overlObj.taskName);
-		taskHrs = overlObj.taskHrs;
-		taskMins = overlObj.taskMins;
-		return *this;
-	}*/
 };
 #endif
